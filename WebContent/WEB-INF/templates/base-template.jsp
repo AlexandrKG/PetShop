@@ -10,9 +10,11 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <title><tiles:getAsString name="title" /></title>
-
+<!-- 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/mystyle.css" type="text/css" />
+ -->
 <style>
-     <%@ include file="/WEB-INF/jsp/mystyle.css"%>
+     <%@ include file="/resources/css/mystyle.css"%>
 </style>
 
 </head>

@@ -124,7 +124,7 @@ public class HibernateUserDao implements CustomerDAO {
 		}		
 	}
 	
-//===============================================================================
+//=====================================getList==========================================
 	
 	private List<Client> getClientList(Query query) {
 		ArrayList<Client> clients = new ArrayList<>();
@@ -274,8 +274,10 @@ public class HibernateUserDao implements CustomerDAO {
 //				System.out.println(sr.getData().after(DataUtl.setData(startDate)));
 //				System.out.println(sr.getData().before(DataUtl.setData(endDate)));
 				sr.setDataTXT(null);
-				if(sr.getData().after(DataUtl.setData(startDate)))	{
-					if(sr.getData().before(DataUtl.setData(endDate))) {
+				if(sr.getData().compareTo(DataUtl.setData(startDate)) >= 0) {
+//				if(sr.getData().after(DataUtl.setData(startDate)))	{
+					if(sr.getData().compareTo(DataUtl.setData(endDate)) <= 0) {
+//					if(sr.getData().before(DataUtl.setData(endDate))) {
 //						System.out.println("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
 						sr.setDataTXT(DataUtl.txtData(sr.getData()));
 					}
@@ -483,8 +485,40 @@ public class HibernateUserDao implements CustomerDAO {
 		delBean(goods);	
 	}
 
+	@Override
+	public void buyGoods(SaleRecord saleRecord) {
+		Transaction tx = null;
+		Session session = sessionFactory.openSession();
+		try {
+		tx = session.beginTransaction();
+		Goods goods = (Goods)session.get(Goods.class, saleRecord.getGoods().getIdGoods()); 
+		goods.setNumber(goods.getNumber()-saleRecord.getNumber());
+		goods.setSold(goods.getSold()+ saleRecord.getNumber());
+		session.update(goods);
+		addSaleRecord(saleRecord);
+		session.flush(); 
+		tx.commit();
+		} catch (Exception ex) {
+			if (tx != null) {
+				tx.rollback();
+			}
+			ex.printStackTrace();
+		} finally {
+			if (session != null) {
+				session.close(); 
+			}
+		}	
+		
+	}
+	
 //===============================================================================	
 	
+
+	@Override
+	public void addSaleRecord(SaleRecord saleRecord) {
+		addBean(saleRecord);
+	}
+
 	@Override
 	public List<SaleRecord> getSaleRecords() {
 		List<SaleRecord> results = null;

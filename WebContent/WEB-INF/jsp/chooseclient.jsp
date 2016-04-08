@@ -4,14 +4,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ page isELIgnored="false"%>
+<script src="${pageContext.request.contextPath}/resources/js/calendar.js" ></script>
 <h2>Choose client for view his activity</h2>
 <form name="form1"
 	action="<%=request.getContextPath()%>/app/clienttradelist.page "
 	method="GET">
 	<c:set var="now" value="<%=new java.util.Date()%>" />
+ 
 	<fmt:formatDate var="sdate" pattern="dd/MM/yyyy" value="${now}" />
 	<fmt:formatDate var="edate" pattern="dd/MM/yyyy" value="${now}" />
-
+    
 	<table class="center">
 		<caption>
 			<b>Choose period</b>
@@ -21,8 +23,15 @@
 			<th>End date</th>
 		</tr>
 		<tr>
-			<th><input type="text" name="startdate" value="${sdate}"></th>
-			<th><input type="text" name="enddate" value="${edate}"></th>
+             <th><input type="text" name="startdate" value="${sdate}" 
+                        onfocus="this.select();lcs(this)"
+                        onclick="event.cancelBubble=true;this.select();lcs(this)">
+            </th>
+            <th>
+                <input type="text" name="enddate" value="${edate}" 
+                        onfocus="this.select();lcs(this)"
+                        onclick="event.cancelBubble=true;this.select();lcs(this)">
+            </th>			
 		</tr>
 	</table>
     <br>

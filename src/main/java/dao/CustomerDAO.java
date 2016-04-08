@@ -31,8 +31,10 @@ public interface CustomerDAO {
 	public List<Goods> getGoods(long idCategory,long idSubcategory);
 	public void addGoods(Goods goods);
 	public void delGoods(long id);
+	public void buyGoods(SaleRecord saleRecord);
 	
 	public List<SaleRecord> getSaleRecords();
 	public List<SaleRecord> getClientSaleRecords(long id);
+	public void addSaleRecord(SaleRecord saleRecord);
 	
 }
